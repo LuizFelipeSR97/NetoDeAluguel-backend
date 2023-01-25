@@ -77,7 +77,7 @@ model services {
   requesterUser       users               @relation("requester", fields: [requesterId], references: [id])
   requesterId         Int
   helperUser          users               @relation("helper", fields: [helperId], references: [id])
-  helperId            Int
+  helperId            Int                 
   price               Int
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @default(now())
@@ -86,10 +86,10 @@ model services {
 
 model conversations {
   id                  Int                 @id @default(autoincrement())
-  firstUser           users               @relation("firstUser", fields: [firstUserId], references: [id])
-  firstUserId         Int
-  secondUser          users               @relation("secondUser", fields: [secondUserId], references: [id])
-  secondUserId        Int
+  requester           users               @relation("firstUser", fields: [requesterId], references: [id])
+  requesterId         Int
+  helper              users               @relation("secondUser", fields: [helperId], references: [id])
+  helperId            Int
   services            services            @relation(fields: [serviceId], references: [id])
   serviceId           Int
   createdAt           DateTime            @default(now())
@@ -99,6 +99,7 @@ model conversations {
 
 model messages {
   id                  Int                 @id @default(autoincrement())
+  text                String
   senderUser          users               @relation("sender", fields: [senderId], references: [id])
   senderId            Int
   recipientUser       users               @relation("recipient", fields: [recipientId], references: [id])
@@ -116,6 +117,7 @@ model sessions {
   users               users               @relation(fields: [userId], references: [id])
   userId              Int
   token               String              @unique
+  isActive            Boolean             @default(true)
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @default(now())
 }
@@ -129,9 +131,9 @@ model addresses {
   state               String
   city                String
   district            String
-  street              String
-  number              String
-  complement          String
+  street              String              @default("-")
+  number              String              @default("-")
+  complement          String              @default("-")
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @default(now())
 }

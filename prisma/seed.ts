@@ -112,6 +112,220 @@ async function main(){
       }
     ]
   });
+  
+  await prisma.addresses.createMany({
+    data: [
+      {
+        userId: 1,
+        name: 'Casa',
+        country: 'Brasil',
+        state: 'Rio de Janeiro',
+        city: 'Rio de Janeiro',
+        district: 'São Conrado'
+      },
+      {
+        userId: 2,
+        name: 'Casa',
+        country: 'Brasil',
+        state: 'Rio de Janeiro',
+        city: 'Rio de Janeiro',
+        district: 'São Conrado'
+      },
+      {
+        userId: 3,
+        name: 'Casa',
+        country: 'Brasil',
+        state: 'Rio de Janeiro',
+        city: 'Rio de Janeiro',
+        district: 'São Conrado'
+      },
+      {
+        userId: 4,
+        name: 'Casa',
+        country: 'Brasil',
+        state: 'Rio de Janeiro',
+        city: 'Rio de Janeiro',
+        district: 'São Conrado'
+      },
+      {
+        userId: 5,
+        name: 'Casa',
+        country: 'Brasil',
+        state: 'Rio de Janeiro',
+        city: 'Rio de Janeiro',
+        district: 'São Conrado'
+      },
+      {
+        userId: 6,
+        name: 'Casa',
+        country: 'Brasil',
+        state: 'Rio de Janeiro',
+        city: 'Rio de Janeiro',
+        district: 'São Conrado'
+      },
+      {
+        userId: 7,
+        name: 'Casa',
+        country: 'Brasil',
+        state: 'Rio de Janeiro',
+        city: 'Rio de Janeiro',
+        district: 'São Conrado'
+      },
+      {
+        userId: 8,
+        name: 'Casa',
+        country: 'Brasil',
+        state: 'Rio de Janeiro',
+        city: 'Rio de Janeiro',
+        district: 'São Conrado'
+      },
+    ]
+  });
+
+  await prisma.services.createMany({
+    data: [
+      {
+        name: 'Meu monitor não está ligando',
+        description: 'Meu monitor ta na tomada mas não funciona',
+        statusId: 2,
+        requesterId: 5,
+        helperId: 1,
+        price: 200
+      },
+      {
+        name: 'Meu monitor não está ligando',
+        description: 'Meu monitor ta na tomada mas não funciona',
+        statusId: 1,
+        requesterId: 6,
+        helperId: 6,
+        price: 200
+      },
+      {
+        name: 'Meu monitor não está ligando',
+        description: 'Meu monitor ta na tomada mas não funciona',
+        statusId: 1,
+        requesterId: 7,
+        helperId: 7,
+        price: 200
+      },
+      {
+        name: 'Meu monitor não está ligando',
+        description: 'Meu monitor ta na tomada mas não funciona',
+        statusId: 1,
+        requesterId: 8,
+        helperId: 8,
+        price: 200
+      },
+      {
+        name: 'Meus videos do youtube demoram muito pra carregar',
+        description: 'Quando coloco pra ver meus videos no youtube, eles demoram mais de 1 minuto pra carregar.',
+        statusId: 1,
+        requesterId: 7,
+        helperId: 7,
+        price: 500
+      },
+      {
+        name: 'Meu monitor não está ligando',
+        description: 'Meu monitor ta na tomada mas não funciona',
+        statusId: 1,
+        requesterId: 4,
+        helperId: 4,
+        price: 500
+      }
+    ]
+  });
+
+  await prisma.conversations.createMany({
+    data: [
+      {
+        requesterId: 5,
+        helperId: 1,
+        serviceId: 1
+      },
+      {
+        requesterId: 5,
+        helperId: 2,
+        serviceId: 1
+      },
+      {
+        requesterId: 7,
+        helperId: 3,
+        serviceId: 5
+      },
+      {
+        requesterId: 7,
+        helperId: 4,
+        serviceId: 5
+      }
+    ]
+  });
+
+  await prisma.messages.createMany({
+    data: [
+      {
+        senderId: 1,
+        recipientId: 5,
+        conversationId: 1,
+        statusId: 1,
+        text: 'Olá Eduardo, me chamo André. Posso te ajudar com a sua dúvida, pode aceitar minha solicitação?'
+      },
+      {
+        senderId: 1,
+        recipientId: 5,
+        conversationId: 2,
+        statusId: 1,
+        text: 'Olá Eduardo, me chamo Bernardo. Posso te ajudar com a sua dúvida, pode aceitar minha solicitação?'
+      },
+      {
+        senderId: 5,
+        recipientId: 1,
+        conversationId: 1,
+        statusId: 1,
+        text: 'Oi André, acabei de aceitar. Obrigado pela ajuda'
+      },
+      {
+        senderId: 1,
+        recipientId: 5,
+        conversationId: 1,
+        statusId: 1,
+        text: 'Pode me passar o seu número de celular, de preferência um que tenha Whatsapp?'
+      },
+      {
+        senderId: 5,
+        recipientId: 1,
+        conversationId: 1,
+        statusId: 1,
+        text: 'Posso sim, é (21) 99999-9999'
+      },
+      {
+        senderId: 3,
+        recipientId: 7,
+        conversationId: 3,
+        statusId: 2,
+        text: 'Olá Gabriela, me chamo Carol. Posso te ajudar com a sua dúvida, pode aceitar minha solicitação?'
+      },
+      {
+        senderId: 4,
+        recipientId: 7,
+        conversationId: 4,
+        statusId: 2,
+        text: 'Olá Gabriela, me chamo Daniela. Posso te ajudar com a sua dúvida, pode aceitar minha solicitação?'
+      }
+    ]
+  });
+
+  await prisma.sessions.createMany({
+    data: [
+      {
+        userId: 1,
+        token: 'abcd1234'
+      },
+      {
+        userId: 5,
+        token: 'ab12'
+      }
+    ]
+  });
 
 
   /* 
