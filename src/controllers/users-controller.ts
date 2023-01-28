@@ -24,7 +24,7 @@ export async function signIn(req: Request, res: Response) {
 
   try {
     const result = await userService.signIn({ email, password });
-
+    res.locals.token = result.token;
     return res.status(httpStatus.OK).send(result);
   } catch (error) {
     return res.status(httpStatus.UNAUTHORIZED).send({});

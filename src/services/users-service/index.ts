@@ -32,6 +32,8 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
 
   await validatePasswordOrFail(password, user.password);
 
+  await sessionRepository.signOutSession(user.id);
+
   const token = await createSession(user.id);
 
   await updateUserStatus(user.id);
