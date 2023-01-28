@@ -1,14 +1,18 @@
 import userRepository from "@/repositories/user-repository";
-import { User } from "@prisma/client";
+import { sessions, users } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { duplicatedEmailError } from "./errors";
+import { duplicatedEmailError, invalidCredentialsError } from "./errors";
+import sessionRepository from "@/repositories/session-repository";
+import { exclude } from "@/utils/prisma-utils";
+import jwt from "jsonwebtoken";
 
-export async function createUser({ email, password }: CreateUserParams): Promise<User> {
+export async function createUser({ name, email, password }: CreateUserParams): Promise<users> {
 
   await validateUniqueEmailOrFail(email);
 
   const hashedPassword = await bcrypt.hash(password, 12);
   return userRepository.create({
+    name,
     email,
     password: hashedPassword,
   });
@@ -21,10 +25,81 @@ async function validateUniqueEmailOrFail(email: string) {
   }
 }
 
-export type CreateUserParams = Pick<User, "email" | "password">;
+async function signIn(params: SignInParams): Promise<SignInResult> {
+  const { email, password } = params;
+
+  const user = await getUserOrFail(email);
+
+  await validatePasswordOrFail(password, user.password);
+
+  const token = await createSession(user.id);
+
+  await updateUserStatus(user.id);
+
+  return {
+    user: exclude(user, "password"),
+    token,
+  };
+}
+
+async function updateUserStatus(userId: number){
+
+  const activeSession = await sessionRepository.findLast(userId);
+
+  if (!activeSession) throw invalidCredentialsError;
+
+  if (activeSession.isActive){
+    await userRepository.updateUserStatus(userId, 1);
+  } else {
+    await userRepository.updateUserStatus(userId, 3);
+  }
+}
+
+async function getUserOrFail(email: string): Promise<GetUserOrFailResult> {
+  const user = await userRepository.findByEmail(email, { id: true, email: true, password: true });
+  if (!user) throw invalidCredentialsError();
+
+  return user;
+}
+
+async function validatePasswordOrFail(password: string, userPassword: string) {
+  const isPasswordValid = await bcrypt.compare(password, userPassword);
+  if (!isPasswordValid) throw invalidCredentialsError();
+}
+
+async function createSession(userId: number) {
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+  await sessionRepository.create({
+    token,
+    userId,
+  });
+
+  return token;
+}
+
+async function signOut(userId: number) {
+  await sessionRepository.signOutSession(userId);
+
+  return;
+}
+
+export type CreateUserParams = Pick<users, "email" | "password" | "name">;
+
+export type SignInParams = Pick<users, "email" | "password">;
+
+export type SignOutParams = Pick<sessions, "userId">;
+
+type SignInResult = {
+  user: Pick<users, "id" | "email">;
+  token: string;
+};
+
+type GetUserOrFailResult = Pick<users, "id" | "email" | "password">;
 
 const userService = {
   createUser,
+  signIn, 
+  signOut
 };
 
 export * from "./errors";

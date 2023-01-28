@@ -46,16 +46,16 @@ model usersStatus {
 model users {
   id                  Int                 @id @default(autoincrement())
   name                String
-  surname             String
+  surname             String              @default("")
   photoUrl            String              @default("")
   description         String              @default("")
-  birthday            DateTime
+  birthday            String              @default("")
   email               String
   password            String
   userTypes           userTypes           @relation(fields: [typeId], references: [id])
-  typeId              Int
+  typeId              Int                 @default(1)
   usersStatus         usersStatus         @relation(fields: [statusId], references: [id])
-  statusId            Int
+  statusId            Int                 @default(3)
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @default(now())
   requester           services[]          @relation("requester")
