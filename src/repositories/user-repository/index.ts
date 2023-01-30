@@ -32,10 +32,24 @@ async function updateUserStatus(userId: number, statusId: number) {
   return user;
 }
 
+async function getUserInfo(userId: number) {
+  const user = await prisma.users.findFirst({
+    where: {
+      id: userId
+    },
+    include: {
+      userTypes: true,
+      usersStatus: true
+    }
+  });
+  return user
+}
+
 const userRepository = {
   findByEmail,
   create,
-  updateUserStatus
+  updateUserStatus,
+  getUserInfo
 };
 
 export default userRepository;

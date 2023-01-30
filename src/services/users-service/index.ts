@@ -85,6 +85,12 @@ async function signOut(userId: number) {
   return;
 }
 
+async function getUserInfo(userId: number) {
+  const user = await userRepository.getUserInfo(userId);
+
+  return user;
+}
+
 export type CreateUserParams = Pick<users, "email" | "password" | "name">;
 
 export type SignInParams = Pick<users, "email" | "password">;
@@ -101,7 +107,8 @@ type GetUserOrFailResult = Pick<users, "id" | "email" | "password">;
 const userService = {
   createUser,
   signIn, 
-  signOut
+  signOut,
+  getUserInfo
 };
 
 export * from "./errors";

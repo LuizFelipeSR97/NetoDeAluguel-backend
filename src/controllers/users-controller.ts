@@ -42,3 +42,21 @@ export async function signOut(req: Request, res: Response) {
     return res.status(httpStatus.UNAUTHORIZED).send({});
   }
 }
+
+export async function getUserInfo(req: Request, res: Response) {
+ 
+  const {id} = req.params;
+  const userId = Number(id);
+
+  try {
+    const user = await userService.getUserInfo(userId);
+    return res.status(httpStatus.OK).send({
+      user
+    });
+  } catch (error) {
+    if (error.name === "DuplicatedEmailError") {
+      return res.status(httpStatus.CONFLICT).send(error);
+    }
+    return res.status(httpStatus.BAD_REQUEST).send(error);
+  }
+};
