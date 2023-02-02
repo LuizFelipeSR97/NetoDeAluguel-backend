@@ -48,7 +48,6 @@ model users {
   name                String
   surname             String              @default("")
   photoUrl            String              @default("")
-  description         String              @default("")
   birthday            String              @default("")
   email               String
   password            String
@@ -81,7 +80,6 @@ model services {
   price               Int
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @default(now())
-  conversations       conversations[]
 }
 
 model conversations {
@@ -90,8 +88,6 @@ model conversations {
   requesterId         Int
   helper              users               @relation("secondUser", fields: [helperId], references: [id])
   helperId            Int
-  services            services            @relation(fields: [serviceId], references: [id])
-  serviceId           Int
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @default(now())
   messages            messages[]

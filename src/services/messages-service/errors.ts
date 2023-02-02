@@ -1,15 +1,15 @@
 import { ApplicationError } from "@/protocols";
 
-export function duplicatedEmailError(): ApplicationError {
+export function notFoundError(): ApplicationError {
   return {
-    name: "DuplicatedEmailError",
-    message: "There is already an user with given email",
+    name: "NotFoundError",
+    message: "The request was not found",
   };
 }
 
-export function invalidCredentialsError(): ApplicationError {
+export function badRequestError(): ApplicationError {
   return {
-    name: "InvalidCredentialsError",
-    message: "email or password are incorrect",
+    name: "BadRequestError",
+    message: "The request was not processed",
   };
 }

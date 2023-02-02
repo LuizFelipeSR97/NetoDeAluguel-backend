@@ -43,11 +43,23 @@ async function findAllOpenServices() {
   });
 }
 
+async function findServiceInfo(id: number) {
+  return prisma.services.findFirst({
+    where: {
+      id
+    },
+    include: {
+      requesterUser: true
+    }
+  });
+}
+
 const servicesRepository = {
   findAllServices,
   findHelperServices,
   findRequesterServices,
-  findAllOpenServices
+  findAllOpenServices,
+  findServiceInfo
 };
 
 export default servicesRepository;

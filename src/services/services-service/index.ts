@@ -24,10 +24,17 @@ async function getAllOpenServices(): Promise<services[]> {
   return result
 }
 
+async function getServiceById(id: number): Promise<services> {
+
+  const result = await servicesRepository.findServiceInfo(id);
+  return result
+}
+
 const servicesService = {
   getServicesByUserId,
   getAllServicesByUserId,
-  getAllOpenServices
+  getAllOpenServices,
+  getServiceById
 };
 
 export * from "./errors";

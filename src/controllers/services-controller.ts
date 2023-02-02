@@ -33,3 +33,14 @@ export async function getAllOpenServices(req: Request, res: Response) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 };
+
+export async function getServiceById(req: Request, res: Response) {
+  const {id} = req.params;
+  const serviceId = Number(id);
+  try {
+    const result = await servicesService.getServiceById(serviceId);
+    return res.status(httpStatus.OK).send(result);
+  } catch (error) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+};
